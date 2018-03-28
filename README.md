@@ -8,7 +8,8 @@ The script was cut out from slimFramework project so it can only be used by thos
 3. Eloquent ORM
 ---Direct simple pagination without headache configurations.
 
-#Little Into
+# Little Into
+
 In index.twig a css class provided renders the pagination in a very sweet manner.
 Because this script is provided for experts, much explanation will not be given.
 Route into the index method in index.php, passing a url query "pageId" returns the data for the page specified.
