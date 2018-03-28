@@ -1,5 +1,4 @@
 # Simple SlimFrameWork Pagination with Twig & Eloquent
-# ifihear@gmail.com
 
 
 ## Usage
