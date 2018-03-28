@@ -1,0 +1,179 @@
+{% extends 'admin/templates/settings.twig' %}
+
+{% block admin_settings %}
+
+    <style>
+
+        /*CSS to control our pagination items*/
+
+        div.pagination {
+            padding: 3px;
+            margin: 3px;
+            text-align:center;
+        }
+
+        div.pagination a {
+            padding: 2px 5px 2px 5px;
+            margin: 2px;
+            border: 1px solid #AAAADD;
+
+            text-decoration: none; /* no underline */
+            color: #000099;
+        }
+        div.pagination a:hover, div.digg a:active {
+            border: 1px solid #000099;
+
+            color: #000;
+        }
+        div.pagination span.current {
+            padding: 2px 5px 2px 5px;
+            margin: 2px;
+            border: 1px solid #000099;
+
+            font-weight: bold;
+            background-color: #000099;
+            color: #FFF;
+        }
+        div.pagination span.disabled {
+            padding: 2px 5px 2px 5px;
+            margin: 2px;
+            border: 1px solid #EEE;
+
+            color: #DDD;
+        }
+
+    </style>
+
+    {#just the current url where we are so we can append page number to it when user clicks pagination#}
+    {% set current_path = path_for('admin_manage_subscription_all')  %}
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //changePagination('0'); // if we are using ajax we can allow this
+        });
+        function changePagination(pageId){
+            // so if the pagination is displaying, and the user clicks on a new page we just need to refresh the page, make the ?pageId = new page id clicked on
+            window.location.href = '{{ current_path }}' + '?pageId=' + pageId;
+
+            /*    // you can be loading your data via ajax here, but we do not want now
+             var dataString = 'pageId='+ pageId;
+             $.ajax({
+             type: "POST",
+
+             data: dataString,
+             cache: false,
+             success: function(result){
+             $(".flash").hide();
+             $("#pageData").html(result);
+             }
+             });*/
+        }
+    </script>
+
+
+
+    <div class="row">
+        <div class="col s12 l12 m12" >
+
+            <div id="">
+                <div class="text-center">
+                    <h4 class="header">Manage Menu Subscription </h4>
+                    <span class="shop-mail"> {{ store.name }} <i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ store.email }}</span>
+                </div>
+
+                <div class="divider"></div>
+                <div class="row">
+
+                    <div class="col s12 l12 m12  table-responsive">
+                        {#{% if subscriptions is not empty %}#}
+                        <table id="manage-food_subscription" class="display" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Invoice</th>
+                                <th>Amount</th>
+                                <th>Package</th>
+                                <th>subscriber</th>
+                                <th>days</th>
+                                <th>paid</th>
+                                <th>Status</th>
+
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+
+                                <th>S/N</th>
+                                <th>Invoice</th>
+                                <th>Amount</th>
+                                <th>Package</th>
+                                <th>subscriber</th>
+                                <th>days</th>
+                                <th>paid</th>
+                                <th>Status</th>
+
+                            </tr>
+                            </tfoot>
+                            <tbody>
+
+
+                            {% for p in subscriptions.data %}
+                                <tr>
+
+                                    <td>{{ loop.index }} </td>
+                                    <td style="min-width: 150px">
+                                        <a href="{{ path_for('admin_view_manage_single_food_subscription', {'subscription_hash': p.id_hash }) }}">
+
+                                            {{ p.invoice}}
+                                        </a>
+                                    </td>
+
+                                    <td>&#8358;{{ p.price|number_format(2, '.', ',') }}</td>
+                                    <td>{{ p.package }}</td>
+
+                                    <td>{{ p.subscriber }}
+                                    </td>
+                                    <td>  {{ p.days }} </td>
+                                    <td>
+                                        {% if p.paid == 0 %}
+                                            <span class="label false">unpaid</span>
+                                        {% elseif p.paid == 1 %}
+
+                                            <span class="label true">Paid</span>
+
+                                        {% else %}
+
+                                            <span class="label false">unknown</span>
+
+                                        {% endif %}
+                                    </td>
+                                    <td>
+
+                                        <span class="label false">{{ p.status }}</span>
+
+
+                                    </td>
+
+
+                                </tr>
+
+                            {% endfor %}
+
+
+
+                            </tbody>
+                        </table>
+
+
+                        {{ packages.pagination | raw }}
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+
+
+{% endblock %}
